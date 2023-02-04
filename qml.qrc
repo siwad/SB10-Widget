@@ -1,0 +1,17 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>res/wifi-enabled.png</file>
+        <file>res/wifi-disabled.png</file>
+        <file>res/led-gr.png</file>
+        <file>res/led-gn.png</file>
+        <file>res/led-rt.png</file>
+        <file>res/led-ge.png</file>
+        <file>res/icon.png</file>
+        <file>res/menu.png</file>
+        <file>res/Haus.png</file>
+        <file>res/Netz.png</file>
+        <file>res/Panels.png</file>
+        <file>res/SonnenBatterie.png</file>
+    </qresource>
+</RCC>
