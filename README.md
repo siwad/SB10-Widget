@@ -1,4 +1,4 @@
-# SB10-Widget
+# SB10-Widget (Application)
 
 An application which visualizes the enery flow between solar panels, SonnenBatterie 10, mains and the flat based on a REST API of SonnenBatterie 10.
 
