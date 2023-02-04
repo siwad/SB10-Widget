@@ -10,6 +10,7 @@ Additionally this application serves as an example of "How-to connect C++/Qt sig
 
 ## How-to connect C++/Qt signals to QML slots
 Thre are several signals of C++ code connected to QML. The type of the arguments should be QVariant.
+
 main.h:
 <pre>
 class QMLBackend {
@@ -44,6 +45,27 @@ void CQMLBackend::powerValuesChanged() {
 }
 </pre>
 main.qml:
+<pre>
+Window {
+    // ...
+
+    // The connections between c++ signal and QML slot
+    Connections {
+        target:  QmlBackend
+
+        // Connections: C++ signals -> QML slots
+        function notifyPowermeterPanelsChanged(value) {
+            //console.log("Powermeter panels changed")
+            powermeter_panels.text = value + " kW"
+            }
+        function notifyPowersupplyVoltageFrequencyChanged(voltage, frequency) {
+            //console.log("Powermeter panels changed")
+            powersupply_meter.text = voltage +" V / " + frequency + " Hz"
+            }
+	// ... and more functions
+    } // End of Connections
+} // End of Window
+</pre>
 
 ## How-to connect QML signals to C++/Qt slots
 
