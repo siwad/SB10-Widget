@@ -26,16 +26,20 @@ void QMLBackend::init(CMainController * pOwner, QQuickItem * pQMLRootItem) {
 
 		// pQMLRootItem : QQuickRootItem
 		//		child[0]: QQmlConnections  ! AT THIS MOMENT !
-		connect(this, SIGNAL(notifyMainsVoltageFrequencyChanged(QVariant,QVariant)), m_pQMLRootItem->children().first(), SLOT(notifyPowersupplyVoltageFrequencyChanged(QVariant,QVariant)), Qt::QueuedConnection);
-		connect(this, SIGNAL(notifyPowerPanelsChanged(QVariant)), m_pQMLRootItem->children().first(), SLOT(notifyPowermeterPanelsChanged(QVariant)), Qt::QueuedConnection);
+		connect(this, SIGNAL(notifyMainsVoltageFrequencyChanged(QVariant,QVariant)), 
+                        m_pQMLRootItem->children().first(), 
+                              SLOT(notifyPowersupplyVoltageFrequencyChanged(QVariant,QVariant)), Qt::QueuedConnection);
+		connect(this, SIGNAL(notifyPowerPanelsChanged(QVariant)), 
+                        m_pQMLRootItem->children().first(), 
+                              SLOT(notifyPowermeterPanelsChanged(QVariant)), Qt::QueuedConnection);
     
     // ...
 }
-
+// ----------------------------------------------------
 void CQMLBackend::powerValuesChanged() {
 	emit notifyPowerPanelsChanged(m_pOwner->getValue(CMainController::EVT_PowerPanels).c_str());
 	emit notifyMainsVoltageFrequencyChanged(m_pOwner->getValue(CMainController::EVT_MainsVoltage).c_str(),
-											m_pOwner->getValue(CMainController::EVT_MainsFrequency).c_str());
+					        m_pOwner->getValue(CMainController::EVT_MainsFrequency).c_str());
   // ...
 }
 </pre>
