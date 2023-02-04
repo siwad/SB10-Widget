@@ -100,6 +100,11 @@ protected slots:
 
 #### main.cpp
 <pre>
+void CQMLBackend::connectQmlSignals() {
+	connect(m_pQMLRootItem, SIGNAL(signalEditingFinished(QVariant,QVariant,QVariant,QVariant)),
+		this, SLOT(editingFinished(QVariant,QVariant,QVariant,QVariant)), Qt::QueuedConnection);
+}
+// ----------------------------------------------------
 void CQMLBackend::editingFinished(QVariant a, QVariant b, QVariant c, QVariant d) {
     unsigned long serialNumber = a.toULongLong();
     std::string   ipAddress    = b.toString().toStdString();
