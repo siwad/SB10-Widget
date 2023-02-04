@@ -9,18 +9,18 @@ Additionally this application serves as an example of "How-to connect C++/Qt sig
 ## The REST API of SonnenBatterie 10
 
 ## How-to connect C++/Qt signals to QML slots
-Thre are several signals of C++ code connected to QML. The type of the arguments should be QVariant.
+There are several signals of C++ code connected to QML. The type of the arguments should be QVariant.
 
-main.h:
+#### main.h:
 <pre>
 class QMLBackend {
-  // ...
+   // ...
 signals:
 	void notifyMainsVoltageFrequencyChanged(QVariant,QVariant);
 	void notifyPowerPanelsChanged(QVariant);
 };
 </pre>
-main.cpp:
+#### main.cpp:
 <pre>
 void QMLBackend::init(CMainController * pOwner, QQuickItem * pQMLRootItem) {
     // ...
@@ -44,7 +44,7 @@ void CQMLBackend::powerValuesChanged() {
   // ...
 }
 </pre>
-main.qml:
+#### main.qml:
 <pre>
 Window {
     // ...
@@ -68,5 +68,45 @@ Window {
 </pre>
 
 ## How-to connect QML signals to C++/Qt slots
+There is one signal of QML connected with one slot of C++ code.
+
+#### main.qml
+<pre>
+Window {
+    // ...
+    Column {
+        // ...
+	
+        // Connection: QML signal -> C++ slot
+        signal signalEditingFinished(sn: variant, ip: variant, auth: variant, cap: variant)
+        // Invoking the QML signal. 
+	// Rem.: the function 'editingFinished' is called from TextInput.onEditingFinished
+        function editingFinished() {
+            signalEditingFinished(edit_serial_number.text, edit_ip_addr.text, 
+	                          edit_auth_token.text, edit_capacity.text)
+        }
+    } // End of main_column_layout
+}
+</pre>
+
+#### main.h
+<pre>
+class QMLBackend {
+    // ...
+protected slots:
+    void editingFinished(QVariant,QVariant,QVariant,QVariant);
+};
+</pre>
+
+#### main.cpp
+<pre>
+void CQMLBackend::editingFinished(QVariant a, QVariant b, QVariant c, QVariant d) {
+    unsigned long serialNumber = a.toULongLong();
+    std::string   ipAddress    = b.toString().toStdString();
+    std::string   authToken    = c.toString().toStdString();
+    unsigned int  capacity     = d.toUInt();
+    // ...
+}
+</pre>
 
 ## Building the product
