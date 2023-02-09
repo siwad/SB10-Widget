@@ -316,12 +316,14 @@ void CMainController::updateVersionLabel() {
 std::string CMainController::getValue(CMainController::EValueType type) {
 	auto power2kWString = [](int power)->std::string {
 				std::string result = "-.--";
-				if (::abs(power) < 100)
+				if (::abs(power) == 0)
+					result = "0.00";
+				else if (::abs(power) < 50)
 					result = QString::number(power/1000.0f, 'f', 3).toStdString();
-				else if (::abs(power) >= 100 && ::abs(power) < 1000)
-					result = QString::number(power/1000.0f, 'f', 2).toStdString();
+				else if (::abs(power) >= 50 && ::abs(power) < 1000)
+					result = QString::number(((float)power+5.0f)/1000.0f, 'f', 2).toStdString(); // 2023-02-09: rounding added
 				else
-					result = QString::number(power/1000.0f, 'f', 1).toStdString();
+					result = QString::number(((float)power+50.0f)/1000.0f, 'f', 1).toStdString(); // 2023-02-09: rounding added
 
 				return result;
 				};
@@ -409,7 +411,7 @@ void CMainController::httpFinished() {
 		QJsonValue  mainsVoltage = object.value("Uac");
 		QJsonValue  energySB10   = object.value("USOC");
 		QJsonValue  consumption  = object.value("Consumption_W");
-		QJsonValue  gridFeedIn   = object,value("GridFeedIn_W");
+		QJsonValue  gridFeedIn   = object.value("GridFeedIn_W");
 		QJsonValue  powerSB10    = object.value("Pac_total_W");
 		if (!powerPanels.isNull())
 			{ m_upPowerPanels->assignValue(powerPanels.toInt()); }
@@ -421,8 +423,13 @@ void CMainController::httpFinished() {
 			}
 		if (!consumption.isNull())
 			{ m_upPowerHouse->assignValue(consumption.toInt()); }
-		if (!gridFeedIn.isNull())
-			{ m_upPowerPanels2Mains->assignValue(gridFeedIn.toInt()); }
+		if (!gridFeedIn.isNull()) {
+			int feed_in = gridFeedIn.toInt(); // >0: feed in | <0: power mains -> house
+			if (feed_in >= 0)
+				m_upPowerPanels2Mains->assignValue(feed_in);
+			else
+				m_upPowerPanels2Mains->assignValue(0);
+			}
 		if (!powerSB10.isNull()) {
 			int pwr = powerSB10.toInt();
 			if (pwr < 0) {
