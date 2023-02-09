@@ -4,9 +4,42 @@ An application which visualizes the enery flow between solar panels, SonnenBatte
 
 Additionally this application serves as an example of "How-to connect C++/Qt signals to QML slots ?" and "How-to connect QML signals to C++/Qt slots ?".
 
+<strong>Important Note</strong>: 
+SB10-Widget is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
 ## Screenshots of the product
+![Screenshot_20230209_154130](https://user-images.githubusercontent.com/107047007/217846446-3c0e9811-7e8d-4f19-8407-2b2fb67b80bf.png)
 
 ## The REST API of SonnenBatterie 10
+A query to the status of SonnenBatterie like this
+<pre>
+curl http://192.168.1.36:80/api/v2/status > ./status.json
+</pre>
+gets a JSON file as result. Remind:
+* no 'Auth-Token' is required in the HTTP header for 'status'
+* the IP address 192.168.1.36 is just an example of the network address of SonnenBatterie 10.
+The resulting JSON file has the following structure (shortened):
+<pre>
+{
+"Consumption_W":1853,
+"Fac":49.97800064086914,
+"GridFeedIn_W":-33,
+"Pac_total_W":1123,
+"Production_W":702,
+"RSOC":52,
+"Timestamp":"2023-01-17 12:51:05",
+"USOC":47,
+"Uac":233,
+}
+</pre>
+SB10-Widget uses the key/value pairs of 
+* "Production_W": PV production in Watts [integer]
+* "Uac": AC voltage in Volts [integer]
+* "Fac": AC frequency in Hertz [float]
+* "USOC": User state of charge in percent [integer]
+* "Consumption_W": consumption of the building in Watts, direct measurement [integer]
+* "GridFeedIn_W": Grid Feed is negative at consumption and positive if it feeds. Unit is Watts [integer]
+* "Pac_total_W": AC power greater than ZERO is discharging, AC Power less than ZERO is charging. Unit in Watts [integer]
 
 ## How-to connect C++/Qt signals to QML slots
 There are several signals of C++ code connected to QML. The type of the arguments should be QVariant.
@@ -115,3 +148,15 @@ void CQMLBackend::editingFinished(QVariant a, QVariant b, QVariant c, QVariant d
 </pre>
 
 ## Building the product
+Checkout of the sources
+<pre>
+git clone https://github.com/siwad/SB10-Widget
+cd SB10-Widget
+git clone https://github.com/siwad/common
+</pre>
+
+I built and tested the product with the following toolchain resp. kits:
+* QCreator 5.9
+* CMake 3.17.0
+* Desktop Qt-5.15.2 GCC 64 bit (running on openSuSE Linux)
+* Android Qt-5.15.2 Clang Multi Abi (running on Android emulation of Sailfish OS), API Level 21
