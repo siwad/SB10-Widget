@@ -337,7 +337,7 @@ std::string CMainController::getValue(CMainController::EValueType type) {
 					result = QString::number(m_upMainsVoltage->getValue(), 'f', 0).toStdString();
 					break;
 		case EVT_MainsFrequency :
-					result = QString::number(m_upMainsFrequency->getValue(), 'f', 3).toStdString();
+					result = QString::number((m_upMainsFrequency->getValue()), 'f', 2).toStdString();
 					break;
 		case EVT_EnergySB10 :
 					result = power2kWString(m_upSB10Energy->getValue());
@@ -407,16 +407,19 @@ void CMainController::httpFinished() {
 	QJsonDocument jsonDoc = QJsonDocument::fromJson(reply, &parseError);
 	if (jsonDoc.isObject()) {
 		QJsonObject object = jsonDoc.object();
-		QJsonValue  powerPanels  = object.value("Production_W");
-		QJsonValue  mainsVoltage = object.value("Uac");
-		QJsonValue  energySB10   = object.value("USOC");
-		QJsonValue  consumption  = object.value("Consumption_W");
-		QJsonValue  gridFeedIn   = object.value("GridFeedIn_W");
-		QJsonValue  powerSB10    = object.value("Pac_total_W");
+		QJsonValue  powerPanels    = object.value("Production_W");
+		QJsonValue  mainsVoltage   = object.value("Uac");
+		QJsonValue  mainsFrequency = object.value("Fac");
+		QJsonValue  energySB10     = object.value("USOC");
+		QJsonValue  consumption    = object.value("Consumption_W");
+		QJsonValue  gridFeedIn     = object.value("GridFeedIn_W");
+		QJsonValue  powerSB10      = object.value("Pac_total_W");
 		if (!powerPanels.isNull())
 			{ m_upPowerPanels->assignValue(powerPanels.toInt()); }
 		if (!mainsVoltage.isNull())
 			{ m_upMainsVoltage->assignValue((float)mainsVoltage.toDouble()); }
+		if (!mainsFrequency.isNull())
+			{ m_upMainsFrequency->assignValue((float)mainsFrequency.toDouble()); }
 		if (!energySB10.isNull()) {
 			m_upSB10EnergyPercentage->assignValue(energySB10.toInt());
 			m_upSB10Energy->assignValue((float)energySB10.toInt() * (float)m_upCapacity->getValue() /*[kWh]*/ * 10.0f); // Result: [Wh]
