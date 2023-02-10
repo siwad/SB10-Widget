@@ -158,5 +158,5 @@ git clone https://github.com/siwad/common
 I built and tested the product with the following toolchain resp. kits:
 * QCreator 5.9
 * CMake 3.17.0
-* Desktop Qt-5.15.2 GCC 64 bit (running on openSuSE Linux)
-* Android Qt-5.15.2 Clang Multi Abi (running on Android emulation of Sailfish OS), API Level 21
+* Desktop_Qt-5.15.2_GCC_64_bit (running on [openSuSE](https://www.opensuse.org) Linux)
+* Android_Qt-5.15.2_Clang_Multi_Abi (running on Android:tm: emulation of [Sailfish OS](https://sailfishos.org/)), API Level 21
