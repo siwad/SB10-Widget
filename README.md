@@ -5,7 +5,7 @@ An application which visualizes the enery flow between solar panels, SonnenBatte
 Additionally this application serves as an example of "How-to connect C++/Qt signals to QML slots ?" and "How-to connect QML signals to C++/Qt slots ?".
 
 <strong>Important Note</strong>: 
-SB10-Widget is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+SB10-Widget is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE; without even any warranty of MISBEHAVIOUR,DAMAGE of SonnenBatterie 10 due to faults,misuse of REST API.
 
 ## Screenshots of the product
 ![Screenshot_20230209_154130](https://user-images.githubusercontent.com/107047007/217846446-3c0e9811-7e8d-4f19-8407-2b2fb67b80bf.png)
