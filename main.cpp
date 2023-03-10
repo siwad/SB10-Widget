@@ -52,6 +52,7 @@
 #include <QQmlApplicationEngine>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <math.h>
 
 
 int main(int argc, char *argv[]) {
@@ -321,9 +322,9 @@ std::string CMainController::getValue(CMainController::EValueType type) {
 				else if (::abs(power) < 50)
 					result = QString::number(power/1000.0f, 'f', 3).toStdString();
 				else if (::abs(power) >= 50 && ::abs(power) < 1000)
-					result = QString::number(((float)power+5.0f)/1000.0f, 'f', 2).toStdString(); // 2023-02-09: rounding added
+					result = QString::number(round(power/10.0f)/100.0f, 'f', 2).toStdString(); // 2023-03-10: rounding revised
 				else
-					result = QString::number(((float)power+50.0f)/1000.0f, 'f', 1).toStdString(); // 2023-02-09: rounding added
+					result = QString::number(round(power/100.0f)/10.0f, 'f', 1).toStdString(); // 2023-03-10: rounding revised
 
 				return result;
 				};
@@ -421,8 +422,9 @@ void CMainController::httpFinished() {
 		if (!mainsFrequency.isNull())
 			{ m_upMainsFrequency->assignValue((float)mainsFrequency.toDouble()); }
 		if (!energySB10.isNull()) {
-			m_upSB10EnergyPercentage->assignValue(energySB10.toInt());
-			m_upSB10Energy->assignValue((float)energySB10.toInt() * (float)m_upCapacity->getValue() /*[kWh]*/ * 10.0f); // Result: [Wh]
+			int energy = energySB10.toInt();
+			m_upSB10EnergyPercentage->assignValue(energy);
+			m_upSB10Energy->assignValue((float)energy * (float)m_upCapacity->getValue() /*[kWh]*/ * 10.0f); // Result: [Wh]
 			}
 		if (!consumption.isNull())
 			{ m_upPowerHouse->assignValue(consumption.toInt()); }
